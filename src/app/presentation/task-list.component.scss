@@ -167,3 +167,15 @@
     }
   }
 } 
+
+.fab-visible-fix {
+  position: fixed !important;
+  right: 16px !important;
+  bottom: 16px !important;
+  z-index: 9999 !important;
+  display: flex !important;
+}
+
+ion-fab[slot="fixed"] {
+  @extend .fab-visible-fix;
+} 
