@@ -34,26 +34,26 @@ export class TaskService {
     this.tasksSubject.next(tasks);
   }
 
-  getStatusLabel(status: TaskStatus): string {
+  getStatusLabel(status: string): string {
     switch (status) {
-      case TaskStatus.PENDING:
+      case 'pending':
         return 'Pendente';
-      case TaskStatus.IN_PROGRESS:
+      case 'in_progress':
         return 'Em Progresso';
-      case TaskStatus.COMPLETED:
+      case 'completed':
         return 'Concluída';
       default:
         return 'Desconhecido';
     }
   }
 
-  getStatusColor(status: TaskStatus): string {
+  getStatusColor(status: string): string {
     switch (status) {
-      case TaskStatus.PENDING:
+      case 'pending':
         return 'warning';
-      case TaskStatus.IN_PROGRESS:
+      case 'in_progress':
         return 'primary';
-      case TaskStatus.COMPLETED:
+      case 'completed':
         return 'success';
       default:
         return 'medium';
