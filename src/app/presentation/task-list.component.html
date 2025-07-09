@@ -1,0 +1,81 @@
+<ion-content [fullscreen]="true">
+  <!-- Header -->
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-title>Gerenciador de Tarefas</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Carregando tarefas...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-container">
+    <ion-card color="danger">
+      <ion-card-content>
+        <ion-icon name="alert-circle"></ion-icon>
+        <p>{{ error }}</p>
+        <ion-button fill="clear" (click)="loadTasks()">
+          Tentar Novamente
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Tasks List -->
+  <div *ngIf="!loading && !error">
+    <ng-container *ngIf="tasks$ | async as tasks">
+      <ion-list *ngIf="tasks.length > 0">
+        <ion-item *ngFor="let task of tasks" class="task-item">
+          <ion-card class="task-card">
+            <ion-card-header>
+              <ion-card-title>{{ task.title }}</ion-card-title>
+              <ion-card-subtitle>
+                Criado em: {{ task.created_at | date:'dd/MM/yyyy HH:mm' }}
+              </ion-card-subtitle>
+            </ion-card-header>
+
+            <ion-card-content>
+              <p class="task-description">{{ task.description }}</p>
+              <div class="task-actions">
+                <ion-chip [color]="getStatusColor(task.status)">
+                  {{ getStatusLabel(task.status) }}
+                </ion-chip>
+                
+                <div class="action-buttons">
+                  <ion-button fill="clear" size="small" (click)="openEditTaskModal(task)">
+                    <ion-icon name="create-outline"></ion-icon>
+                  </ion-button>
+                  
+                  <ion-button fill="clear" size="small" color="danger" (click)="confirmDeleteTask(task)">
+                    <ion-icon name="trash-outline"></ion-icon>
+                  </ion-button>
+                  
+                  <ion-button fill="clear" size="small" color="primary" (click)="changeTaskStatus(task)">
+                    <ion-icon name="refresh-outline"></ion-icon>
+                  </ion-button>
+                </div>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-item>
+      </ion-list>
+      <!-- Empty State -->
+      <div *ngIf="tasks.length === 0" class="empty-state">
+        <ion-icon name="document-outline" size="large"></ion-icon>
+        <h3>Nenhuma tarefa encontrada</h3>
+        <p>Clique no botão + para adicionar uma nova tarefa</p>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- Floating Action Button -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="openCreateTaskModal()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content> 

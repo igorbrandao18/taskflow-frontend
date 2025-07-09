@@ -1,0 +1,39 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="task-form">
+  <ion-list lines="none">
+    <ion-item>
+      <ion-label position="stacked">Título <span class="required">*</span></ion-label>
+      <ion-input formControlName="title" maxlength="100" placeholder="Digite o título da tarefa"></ion-input>
+    </ion-item>
+    <div *ngIf="form.get('title')?.touched && form.get('title')?.invalid" class="error-message">
+      <small *ngIf="form.get('title')?.errors?.['required']">Título é obrigatório.</small>
+      <small *ngIf="form.get('title')?.errors?.['maxlength']">Máximo de 100 caracteres.</small>
+    </div>
+
+    <ion-item>
+      <ion-label position="stacked">Descrição <span class="required">*</span></ion-label>
+      <ion-textarea formControlName="description" maxlength="500" placeholder="Descreva a tarefa"></ion-textarea>
+    </ion-item>
+    <div *ngIf="form.get('description')?.touched && form.get('description')?.invalid" class="error-message">
+      <small *ngIf="form.get('description')?.errors?.['required']">Descrição é obrigatória.</small>
+      <small *ngIf="form.get('description')?.errors?.['maxlength']">Máximo de 500 caracteres.</small>
+    </div>
+
+    <ion-item>
+      <ion-label>Status</ion-label>
+      <ion-select formControlName="status">
+        <ion-select-option *ngFor="let option of statusOptions" [value]="option.value">
+          {{ option.label }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <div class="form-actions">
+    <ion-button expand="block" type="submit" [disabled]="form.invalid">
+      Salvar
+    </ion-button>
+    <ion-button expand="block" fill="clear" color="medium" type="button" (click)="dismiss()">
+      Cancelar
+    </ion-button>
+  </div>
+</form> 
